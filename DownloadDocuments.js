@@ -28,10 +28,10 @@ async function DownloadDocuments()
         process.env.COZY_FIELDS = JSON.stringify(stOptions)
         
         // Charge l'élément et débute la récupération
-        element = require(stUnElement.Source)
+        element = require(stUnElement.source)
 
         // On décharge l'élément pour pouvoir utiliser plusieurs fois le même connecteur
-        var name = require.resolve(stUnElement.Source);
+        var name = require.resolve(stUnElement.source);
         delete require.cache[name];
         
     })

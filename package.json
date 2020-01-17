@@ -1,0 +1,23 @@
+{
+  "name": "downloaddocuments",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "shelljs": "^0.8.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bouhmarc/DownloadDocuments.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Bouhmarc/DownloadDocuments/issues"
+  },
+  "homepage": "https://github.com/Bouhmarc/DownloadDocuments#readme"
+}
