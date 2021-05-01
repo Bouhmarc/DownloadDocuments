@@ -1,5 +1,6 @@
 [
     {
+        "name":"Nom du plugin"
         "Source":"Chemin du fichier JS source du connecteur (généralement index.js)",
         "login":"login de connexion au site",
         "password":"mot de passe de connexion au site",

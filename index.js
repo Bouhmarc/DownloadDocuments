@@ -1,5 +1,6 @@
 const downloadDocuments = require('./DownloadDocuments')
-const InstallConnector = require('./InstallConnector')
+const InstallConnector = require('./InstallConnector').installConnector
+const UpdateConnector = require('./InstallConnector').UpdateConnector
 
 
 // récupère l'opération (install (i) ou download (dld))
@@ -13,11 +14,17 @@ switch (sOperation.toUpperCase())
         InstallConnector(process.argv[3])
         break;
     }
+    case 'UPDATE':
+    case 'U':
+        {
+            UpdateConnector(process.argv[3])
+            break;
+        }   
     case 'DOWNLOAD':
     case 'DLD':
     {
         // On débute le téléchargement
-        downloadDocuments()
+        downloadDocuments(process.argv[3])
         break
     }
     default:

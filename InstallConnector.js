@@ -50,6 +50,9 @@ async function installConnector(sURLGit) {
   // Install les modules nodes dans le répertoire parent
   await StartProcess('npm install ./' + sRepertoire)
 
+  // Installe toutes les dépendances
+  await InstallDependances(sRepertoire)
+
   // Il reste l'installation dans le .json
   // Récupération du répertoire, login, user
   await DeclareConnecteur(path.join(sRepertoirePlugin, sRepertoire))
@@ -61,6 +64,10 @@ async function DeclareConnecteur(sRepertoireConnecteur)
   
   sIndex = path.join(sRepertoireConnecteur, '/src/','index.js')
 
+  console.log('Saisissez le nom du plugin : ')
+  let sNomPlugin = await readlineSync();
+
+
   console.log('Saisissez le répertoire de téléchargement : ')
   let sRepertoireTelechargement = await readlineSync();
 
@@ -69,6 +76,15 @@ async function DeclareConnecteur(sRepertoireConnecteur)
 
   console.log('Saisissez le mot de passe de connexion au service : ')
   let sMotDePasse = await readlineSync();
+
+
+  // Lit le manifest du connecteur pour savoir si il reste des paramètres
+  //sContenuManifest = fs.readFileSync(path.join(sRepertoireConnecteur,'manifest.konnector'), 'utf8')
+  // Parse le fichier JSON
+  //let oManifest = JSON.parse(sContenuManifest)
+
+  //oManifest.fields
+
 
   // Lit le JSON de configuration 
   sFichierPackage = path.join(__dirname , '/connectors_list.json')
@@ -80,6 +96,7 @@ async function DeclareConnecteur(sRepertoireConnecteur)
   }
 
   MonPackage = {}
+  MonPackage["name"] = sNomPlugin
   MonPackage["source"] = sIndex
   MonPackage["folder_to_save"] = sRepertoireTelechargement
   MonPackage["login"] = sLogin
@@ -153,4 +170,73 @@ function RemplaceLibs(sRepertoire) {
   fs.writeFileSync(sFichierPackage, JSON.stringify(MonPackage), 'utf8')
 
 }
-module.exports = installConnector
+
+function InstallDependances(sRepertoire)
+{
+
+  return true
+
+}
+
+async function UpdateConnector(sNomPlugin) {
+
+  let sRepertoirePlugin = path.join(process.cwd(),'/plugins/')
+  
+
+    // Récupère le nom du connecteur (le nom du répertoire dans lequel sera cloné le repo)
+  
+  // On se positionne dans le répertoire du plugin
+  sRepertoirePluginUpdate = path.join(sRepertoirePlugin, sNomPlugin)
+
+    // Si le répertoire n'existe pas, on sort en erreur
+  // if (fs.existsSync(sRepertoirePluginUpdate) == false)
+  //  return false
+
+
+
+  // On change le répertoire pour faire la maj
+  process.chdir(sRepertoirePluginUpdate)
+
+  console.log('Récupération du repository')
+  
+  // Clone le repo
+  await StartProcess('git pull')
+
+  console.log('Remplacement de référence aux libs de cozy')
+  
+  // Remplace tous les cozy-lib par cozy-without-cozy
+  await RemplaceLibs(sRepertoirePluginUpdate)
+
+  console.log('Installation de dépendances')
+
+  process.chdir(sRepertoirePlugin)
+
+  // Install les modules nodes dans le répertoire parent
+  await StartProcess('npm install ./' + sRepertoire)
+
+  // Installe toutes les dépendances
+  await InstallDependances(sRepertoire)
+
+  console.log("Le connecteur est correctement mis à jour")
+
+}
+
+/*
+function ListeDependances(sFichierOrigine)
+{
+    var requiredFiles = [];
+    var contents = fs.readFileSync(sFichierOrigine, 'utf8').split('\n');
+
+    contents.forEach(function(line){
+        var re = /(?:require\('?"?)(.*?)(?:'?"?\))/;
+        var matches = re.exec(line);
+
+        if(matches){
+            requiredFiles.push(matches[1]);
+        }
+
+    });
+
+    return requiredFiles;
+}*/
+module.exports = {installConnector, UpdateConnector}
