@@ -7,6 +7,7 @@ function DownloadDocuments(sNomPlugin)
 {
     // Liste les connecteurs
     ConnectorsList = JSON.parse(fs.readFileSync(__dirname + '/connectors_list.json'))
+    secrets = JSON.parse(fs.readFileSync(__dirname + '/secret.json'))
 
     ConnectorsList.forEach(stUnElement => {
 
@@ -15,6 +16,9 @@ function DownloadDocuments(sNomPlugin)
 
         // Sauvegarde un fichier de config
         
+        // On envoie les infos de secrets
+        stUnElement.secrets = secrets
+
         // Construit le nom du fichier
         sNomFichier = uuid.v4() + '.json'
 

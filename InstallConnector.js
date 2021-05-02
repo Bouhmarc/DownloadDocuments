@@ -182,8 +182,7 @@ async function UpdateConnector(sNomPlugin) {
 
   let sRepertoirePlugin = path.join(process.cwd(),'/plugins/')
   
-
-    // Récupère le nom du connecteur (le nom du répertoire dans lequel sera cloné le repo)
+  // Récupère le nom du connecteur (le nom du répertoire dans lequel sera cloné le repo)
   
   // On se positionne dans le répertoire du plugin
   sRepertoirePluginUpdate = path.join(sRepertoirePlugin, sNomPlugin)
@@ -192,10 +191,11 @@ async function UpdateConnector(sNomPlugin) {
   // if (fs.existsSync(sRepertoirePluginUpdate) == false)
   //  return false
 
-
-
   // On change le répertoire pour faire la maj
   process.chdir(sRepertoirePluginUpdate)
+
+  // Annulation des modifications
+  await StartProcess('git checkout .')
 
   console.log('Récupération du repository')
   
@@ -212,10 +212,12 @@ async function UpdateConnector(sNomPlugin) {
   process.chdir(sRepertoirePlugin)
 
   // Install les modules nodes dans le répertoire parent
-  await StartProcess('npm install ./' + sRepertoire)
+  await StartProcess('npm install ./' + sNomPlugin + ' -g')
+
+  await StartProcess('npm upgrade ./' + sNomPlugin + ' -g')
 
   // Installe toutes les dépendances
-  await InstallDependances(sRepertoire)
+  await InstallDependances(sRepertoirePlugin)
 
   console.log("Le connecteur est correctement mis à jour")
 

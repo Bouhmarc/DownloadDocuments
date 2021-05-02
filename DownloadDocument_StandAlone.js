@@ -6,10 +6,12 @@ sFichierConfig = process.argv[2]
 
 
     // Récupère la configuration du connecteur
-//    stUnElement = JSON.parse(fs.readFileSync(sFichierConfig))
+    stUnElement = JSON.parse(fs.readFileSync(sFichierConfig))
 
-    stUnElement = JSON.parse('{"source": "/Users/marcpolycarpe/Documents/Sources/Cozy/konnectors/plugins/aprr/src/index.js","folder_to_save": "/Users/marcpolycarpe/Documents/Documents/APRR/","login": "250091389862","password": "mp0682969580"}')
+    stParametres = {}
 
+    stParametres.secret = stUnElement.secrets
+    
     stOptions = {}
 
     // Construit la structure avec les options
@@ -25,11 +27,11 @@ sFichierConfig = process.argv[2]
             stOptions.fields[stAddon.name] = stAddon.value
         });
     }   
-
+    process.env.COZY_PARAMETERS = JSON.stringify(stParametres)
     process.env.COZY_FIELDS = JSON.stringify(stOptions)
 
     // Importe le connecteur
     require(stUnElement.source)
 
     // Supprime le fichier
-//    fs.unlinkSync(sFichierConfig)
+    fs.unlinkSync(sFichierConfig)
