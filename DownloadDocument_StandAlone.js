@@ -30,6 +30,8 @@ sFichierConfig = process.argv[2]
     process.env.COZY_PARAMETERS = JSON.stringify(stParametres)
     process.env.COZY_FIELDS = JSON.stringify(stOptions)
 
+    
+
     // Importe le connecteur
     require(stUnElement.source)
 

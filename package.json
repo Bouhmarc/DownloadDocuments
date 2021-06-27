@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "cozy-konnector-engie": "file:plugins/engie",
     "shelljs": "^0.8.3"
   },
   "devDependencies": {},
