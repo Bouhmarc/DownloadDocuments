@@ -5,11 +5,17 @@ var uuid = require('uuid');
 
 function DownloadDocuments(sNomPlugin)
 {
+
+    if (!sNomPlugin)
+        sNomPlugin = ''
+    
     // Liste les connecteurs
     ConnectorsList = JSON.parse(fs.readFileSync(__dirname + '/connectors_list.json'))
     secrets = JSON.parse(fs.readFileSync(__dirname + '/secret.json'))
+        
+    for (nIndice in ConnectorsList) {
 
-    ConnectorsList.forEach(stUnElement => {
+        stUnElement = ConnectorsList[nIndice]
 
         if (sNomPlugin != '' && stUnElement.name != sNomPlugin)
             return
@@ -24,12 +30,25 @@ function DownloadDocuments(sNomPlugin)
 
         fs.writeFileSync(sNomFichier, JSON.stringify(stUnElement))
         
-          // Lancement d'un autre process
-          
-          child_process.execSync(
+        // Lancement d'un autre process
+        try{
+              console.log('----------------------------------------------------------------------')
+              console.log('Exécution du connecteur ' + stUnElement.name)
+              console.log('----------------------------------------------------------------------')
+              var sSTDIO = child_process.execSync(
             'node ' + __dirname + '/DownloadDocument_StandAlone.js "'+sNomFichier + '"',
-            {stdio: 'inherit'})
-    })
+            {stdio: 'pipe'})
+
+            console.log('----------------------------------------------------------------------')
+            console.log('Fin du connecteur ' + stUnElement.name)
+            console.log('----------------------------------------------------------------------')
+          
+        }catch(err){
+              console.log('----------------------------------------------------------------------')
+              console.log( "Erreur lors de l'exécution du connecteur "+stUnElement.name)
+              console.log('----------------------------------------------------------------------')
+        }
+    }
 
 }
 module.exports = DownloadDocuments
