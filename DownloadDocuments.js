@@ -39,12 +39,13 @@ function DownloadDocuments(sNomPlugin)
             'node ' + __dirname + '/DownloadDocument_StandAlone.js "'+sNomFichier + '"',
             {stdio: 'pipe'})
 
-            const nIndice = sSTDIO.indexOf("critical")
+            var nIndice = sSTDIO.indexOf("critical")
 
             if (nIndice)
-                console.log('ERREUR : ' + sSTDIO[nIndice])
-                bErreur = true
-
+            {   
+                console.log('ERREUR : ' + sSTDIO.toString('utf8', nIndice, sSTDIO.indexOf('\n', nIndice)))
+                
+            }
             console.log('----------------------------------------------------------------------')
             console.log('Fin du connecteur ' + stUnElement.name)
             console.log('----------------------------------------------------------------------')
