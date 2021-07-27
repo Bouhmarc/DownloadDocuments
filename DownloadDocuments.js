@@ -39,6 +39,12 @@ function DownloadDocuments(sNomPlugin)
             'node ' + __dirname + '/DownloadDocument_StandAlone.js "'+sNomFichier + '"',
             {stdio: 'pipe'})
 
+            const nIndice = sSTDIO.indexOf("critical")
+
+            if (nIndice)
+                console.log('ERREUR : ' + sSTDIO[nIndice])
+                bErreur = true
+
             console.log('----------------------------------------------------------------------')
             console.log('Fin du connecteur ' + stUnElement.name)
             console.log('----------------------------------------------------------------------')
@@ -47,6 +53,7 @@ function DownloadDocuments(sNomPlugin)
               console.log('----------------------------------------------------------------------')
               console.log( "Erreur lors de l'exécution du connecteur "+stUnElement.name)
               console.log('----------------------------------------------------------------------')
+              bErreur = true
         }
     }
 
