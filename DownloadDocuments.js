@@ -18,7 +18,7 @@ function DownloadDocuments(sNomPlugin)
         stUnElement = ConnectorsList[nIndice]
 
         if (sNomPlugin != '' && stUnElement.name != sNomPlugin)
-            return
+            continue
 
         // Sauvegarde un fichier de config
         
